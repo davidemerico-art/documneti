@@ -1,10 +1,10 @@
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
+import { FaDownload, FaEnvelope, FaTelegramPlane } from "react-icons/fa";
 
 function CompileTemplate() {
   const { id } = useParams();
   const [doc, setDoc] = useState(null);
-  const [values, setValues] = useState({});
 
   useEffect(() => {
     const docs = JSON.parse(localStorage.getItem("documents")) || [];
@@ -12,37 +12,62 @@ function CompileTemplate() {
     setDoc(found);
   }, [id]);
 
-  const handleChange = (key, value) => {
-    setValues({ ...values, [key]: value });
+  const handleDownload = () => {
+    alert("Download documento compilato");
   };
 
-  const downloadCompiled = () => {
-    alert("Simulazione generazione documento con variabili inserite");
+  const handleEmail = () => {
+    alert("Invio email (qui collegherai il backend)");
   };
 
-  if (!doc) return <div>Documento non trovato</div>;
+  const handleTelegram = () => {
+    alert("Invio Telegram (qui collegherai il backend)");
+  };
+
+  if (!doc) return <div className="container">Documento non trovato</div>;
+
   return (
-  <div className="container">
-    <h2>Compila Template</h2>
+    <div className="container">
+      <h2>Anteprima Documento</h2>
 
-    <div className="preview-box">
-      Anteprima documento...
+      <div className="preview-box">
+        <p><strong>Nome:</strong> {doc.name}</p>
+        <p><strong>Descrizione:</strong> {doc.description}</p>
+        <hr />
+        <p>Qui verrà mostrata l'anteprima reale del documento generato.</p>
+      </div>
+
+      <div style={{
+        marginTop: "25px",
+        display: "flex",
+        gap: "25px",
+        alignItems: "center"
+      }}>
+
+        <FaDownload
+          size={28}
+          style={{ cursor: "pointer", color: "#4b0082" }}
+          onClick={handleDownload}
+          title="Scarica Documento"
+        />
+
+        <FaEnvelope
+          size={28}
+          style={{ cursor: "pointer", color: "#4b0082" }}
+          onClick={handleEmail}
+          title="Invia Email"
+        />
+
+        <FaTelegramPlane
+          size={28}
+          style={{ cursor: "pointer", color: "#4b0082" }}
+          onClick={handleTelegram}
+          title="Invia Telegram"
+        />
+
+      </div>
     </div>
-
-    {doc.variables.map((v, i) => (
-      <input
-        key={i}
-        className="input"
-        placeholder={v}
-        onChange={(e) => handleChange(v, e.target.value)}
-      />
-    ))}
-
-    <button className="btn" onClick={downloadCompiled}>
-      Scarica File
-    </button>
-  </div>
-);
+  );
 }
 
 export default CompileTemplate;

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { FaArrowLeft } from "react-icons/fa";
 
 function Upload() {
   const [name, setName] = useState("");
@@ -80,6 +81,14 @@ function Upload() {
     <button className="btn" onClick={handleUpload}>
       {type === "static" ? "Carica" : "Conferma e Carica"}
     </button>
+      <div>
+         <FaArrowLeft
+          size={20}
+         style={{ cursor: "pointer", color: "#4b0082" }}
+          onClick={() => navigate("/")}
+          title="Torna alla Home"
+           />
+         </div>
   </div>
 );
 }

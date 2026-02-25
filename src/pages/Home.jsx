@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { FaTrash, FaDownload } from "react-icons/fa";
+import { FaTrash, FaDownload, FaPen, FaEnvelope } from "react-icons/fa";
 import { useDocuments } from "../hooks/useDocuments";
 
 function Home() {
@@ -17,29 +17,26 @@ function Home() {
   };
 
   return (
-    <div
-      className="container"
-      style={{
-        minHeight: "100vh",
-        display: "flex",
-        flexDirection: "column",
-        padding: "40px",
-        backgroundColor: "#f3f3f3",
-      }}
-    >
+    <div style={{ padding: "40px", maxWidth: "900px", margin: "0 auto", display: "flex", flexDirection: "column", minHeight: "100vh" }}>
+    
+      <div style={{ display: "flex", alignItems: "center", marginBottom: "30px", justifyContent: "center", gap: "20px" }}>
+        <h1 style={{ fontSize: "42px", margin: 0 }}>Documenti</h1>
 
-
-      <div style={{ textAlign: "center", marginBottom: "30px" }}>
-        <h1 style={{ fontSize: "42px", marginBottom: "20px" }}>Documenti</h1>
+        
         <button className="btn" onClick={() => navigate("/upload")}>
           Crea Documento
         </button>
-        <button className="btn" onClick={() => navigate("/messages")}>
-          Invia Messaggi
-        </button>
+
+       
+        <FaEnvelope
+          size={30}
+          style={{ cursor: "pointer", color: "#4b0082" }}
+          title="Invia email"
+          onClick={() => navigate("/messages")}
+        />
       </div>
 
-      {/* Barra di ricerca */}
+      
       <div style={{ marginBottom: "20px", textAlign: "center" }}>
         <input
           className="search-input"
@@ -49,15 +46,15 @@ function Home() {
         />
       </div>
 
-     
+    
       <div
         style={{
           backgroundColor: "#fff",
           padding: "25px",
           borderRadius: "15px",
           boxShadow: "0 4px 10px rgba(0,0,0,0.1)",
-          flex: 1,             
-          overflowY: "auto",   
+          flex: 1,
+          overflowY: "auto",
         }}
       >
         {filteredDocs.length === 0 ? (
@@ -74,16 +71,24 @@ function Home() {
               <div style={{ position: "absolute", top: "20px", right: "20px", display: "flex", gap: "10px" }}>
                 <FaDownload
                   size={20}
-                  style={{ cursor: "pointer", color: "#ffffff" }}
+                  style={{ cursor: "pointer", color: "#4b0082" }}
                   title="Scarica"
                   onClick={() => downloadFile(doc)}
                 />
                 <FaTrash
                   size={20}
-                  style={{ cursor: "pointer", color: "#ffffff" }}
+                  style={{ cursor: "pointer", color: "#4b0082" }}
                   title="Elimina"
                   onClick={() => deleteDocument(doc.id)}
                 />
+                {doc.type === "template" && (
+                  <FaPen
+                    size={20}
+                    style={{ cursor: "pointer", color: "#4b0082" }}
+                    title="Compila Template"
+                    onClick={() => navigate(`/compile/${doc.id}`)}
+                  />
+                )}
               </div>
             </div>
           ))
@@ -91,16 +96,6 @@ function Home() {
       </div>
 
       
-      <div
-        style={{
-          marginTop: "20px",
-          flex: 1,                   
-          borderRadius: "25px",
-          backgroundImage: "url('https://wallpapers.com/images/hd/google-docs-3000-x-2000-background-ev56z6cpsw49w5rv.jpg')",
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-        }}
-      ></div>
     </div>
   );
 }

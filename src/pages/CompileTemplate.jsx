@@ -1,10 +1,12 @@
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { FaDownload } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
+import { FaDownload ,FaArrowLeft} from "react-icons/fa";
 
 function CompileTemplate() {
   const { id } = useParams();
   const [doc, setDoc] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const docs = JSON.parse(localStorage.getItem("documents")) || [];
@@ -12,16 +14,16 @@ function CompileTemplate() {
     setDoc(found);
   }, [id]);
 
-  const handleDownload = () => {
-    alert("Download documento compilato");
-  };
 
-  
+  const downloadFile = (doc) => {
+    if (!doc || !doc.fileUrl) return;
+    window.open(doc.fileUrl);
+  };
 
   if (!doc) return <div className="container">Documento non trovato</div>;
 
   return (
-    <div className="container">
+    <div className="container" style={{ minHeight: "100vh", padding: "40px" }}>
       <h2>Anteprima Documento</h2>
 
       <div className="preview-box">
@@ -37,16 +39,20 @@ function CompileTemplate() {
         gap: "25px",
         alignItems: "center"
       }}>
-
         <FaDownload
-          size={28}
+          size={22}
           style={{ cursor: "pointer", color: "#4b0082" }}
-          onClick={handleDownload}
-          title="Scarica Documento"
+          title="Scarica"
+          onClick={() => downloadFile(doc)}
         />
-
-      
-
+        <div>
+         <FaArrowLeft
+          size={20}
+         style={{ cursor: "pointer", color: "#4b0082" }}
+          onClick={() => navigate("/")}
+          title="Torna alla Home"
+           />
+         </div>
       </div>
     </div>
   );

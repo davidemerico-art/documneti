@@ -1,58 +1,165 @@
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { FaEnvelope, FaTelegramPlane, FaArrowLeft } from "react-icons/fa";
+import { FaPlus, FaPaperPlane, FaTrash, FaArrowLeft, FaDownload } from "react-icons/fa";
+import useDocuments from "../hooks/useDocuments";
 
 function Messages() {
   const navigate = useNavigate();
+  const [bozze, setBozze] = useState([]);
+  const { documents } = useDocuments();
 
-  const handleEmail = () => {
-    alert("Invio email (qui collegherai il backend)");
+  useEffect(() => {
+    const saved = JSON.parse(localStorage.getItem("bozze")) || [];
+    setBozze(saved);
+  }, []);
+
+  const handleSend = () => {
+    if (bozze.length === 0) {
+      alert("Non ci sono bozze da inviare");
+      return;
+    }
+    alert(`Simula invio di tutte le bozze (${bozze.length})`);
   };
 
-  const handleTelegram = () => {
-    alert("Invio Telegram (qui collegherai il backend)");
+  const handleDelete = (id) => {
+    if (window.confirm("Sei sicuro di voler eliminare questa bozza?")) {
+      const updated = bozze.filter(b => b.id !== id);
+      setBozze(updated);
+      localStorage.setItem("bozze", JSON.stringify(updated));
+    }
+  };
+
+  const downloadFile = (bozza) => {
+    const attachedDocs = documents.filter(doc =>
+      bozza.attachments.includes(doc.id)
+    );
+
+    if (attachedDocs.length === 0) {
+      alert("Nessun allegato da scaricare");
+      return;
+    }
+
+    attachedDocs.forEach(doc => {
+      if (!doc.fileUrl) {
+        alert(`Il documento ${doc.name} non ha un file disponibile`);
+        return;
+      }
+      window.open(doc.fileUrl);
+    });
   };
 
   return (
-    <div className="container">
-      <h2>Invia Messaggi</h2>
+    <div
+      style={{
+        padding: "40px",
+        maxWidth: "900px",
+        margin: "0 auto",
+        display: "flex",
+        flexDirection: "column",
+        minHeight: "100vh"
+      }}
+    >
+     <h2 style={{ marginBottom: "10px" }}>
+  Gestione Bozze Email
+</h2>
 
-      <div className="card">
-        <p>
-          Qui potrai inviare messaggi Email o Telegram ai destinatari
-          associati ai tuoi documenti.
-        </p>
-
-        <div
-          style={{
-            marginTop: "25px",
-            display: "flex",
-            gap: "40px",
-            justifyContent: "center",
-          }}
-        >
-          <FaEnvelope
-            size={35}
+<div
+  style={{
+    display: "flex",
+    gap: "20px",
+    alignItems: "center",
+    marginBottom: "30px"
+  }}
+>
+       <FaPlus
+            size={22}
             style={{ cursor: "pointer", color: "#4b0082" }}
-            onClick={handleEmail}
-            title="Invia Email"
+            title="Crea Nuova Bozza"
+            onClick={() => navigate("/creabozze")}
           />
 
-          <FaTelegramPlane
-            size={35}
-            style={{ cursor: "pointer", color: "#4b0082" }}
-            onClick={handleTelegram}
-            title="Invia Telegram"
-          />
-        </div>
-
-        <div style={{ marginTop: "30px", textAlign: "center" }}>
+       
           <FaArrowLeft
-            size={20}
+            size={22}
             style={{ cursor: "pointer", color: "#4b0082" }}
             onClick={() => navigate("/")}
             title="Torna alla Home"
           />
-        </div>
+          
+      
+      </div>
+
+     
+      <div
+        style={{
+          backgroundColor: "#fff",
+          padding: "25px",
+          borderRadius: "15px",
+          boxShadow: "0 4px 10px rgba(0,0,0,0.1)",
+          flex: 1,
+          overflowY: "auto"
+        }}
+      >
+        {bozze.length === 0 ? (
+          <p style={{ textAlign: "center", fontSize: "18px" }}>
+            Nessuna bozza creata
+          </p>
+        ) : (
+          <>
+            <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
+              {bozze.map((bozza) => (
+                <div
+                  key={bozza.id}
+                  style={{
+                    padding: "20px",
+                    border: "1px solid #000000",
+                    borderRadius: "12px",
+                    position: "relative",
+                    backgroundColor: "#4284f7"
+                  }}
+                >
+                  <h3 style={{ marginTop: 0 }}>{bozza.name}</h3>
+                  <p><strong>Oggetto:</strong> {bozza.subject || "Nessun oggetto"}</p>
+                  <p><strong>Allegati:</strong> {bozza.attachments.join(", ") || "Nessuno"}</p>
+                  <p><strong>Template:</strong> {bozza.template || "Nessuno"}</p>
+
+                  <div
+                    style={{
+                      position: "absolute",
+                      top: "20px",
+                      right: "20px",
+                      display: "flex",
+                      gap: "12px"
+                    }}
+                  >
+                    <FaTrash
+                      size={20}
+                      style={{ cursor: "pointer", color: "#4b0082" }}
+                      title="Elimina Bozza"
+                      onClick={() => handleDelete(bozza.id)}
+                    />
+                    <FaDownload
+                      size={20}
+                      style={{ cursor: "pointer", color: "#4b0082" }}
+                      title="Scarica allegati"
+                      onClick={() => downloadFile(bozza)}
+                    />
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            
+            <div style={{ marginTop: "40px", textAlign: "center" }}>
+              <FaPaperPlane
+                size={30}
+                style={{ cursor: "pointer", color: "#4b0082" }}
+                title="Simula Invio"
+                onClick={handleSend}
+              />
+            </div>
+          </>
+        )}
       </div>
     </div>
   );

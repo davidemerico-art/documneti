@@ -28,3 +28,4 @@ export const useDocuments = () => {
  
   return { documents, saveDocuments, deleteDocument };
 };
+export default useDocuments;

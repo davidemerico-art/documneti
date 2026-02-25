@@ -14,7 +14,7 @@ function Upload() {
     setFile(selectedFile);
 
     if (type === "template") {
-      // Simulazione variabili trovate
+    
       setVariables(["nome", "cognome", "via"]);
     }
   };

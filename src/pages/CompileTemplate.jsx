@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { FaDownload, FaEnvelope, FaTelegramPlane } from "react-icons/fa";
+import { FaDownload } from "react-icons/fa";
 
 function CompileTemplate() {
   const { id } = useParams();
@@ -16,13 +16,7 @@ function CompileTemplate() {
     alert("Download documento compilato");
   };
 
-  const handleEmail = () => {
-    alert("Invio email (qui collegherai il backend)");
-  };
-
-  const handleTelegram = () => {
-    alert("Invio Telegram (qui collegherai il backend)");
-  };
+  
 
   if (!doc) return <div className="container">Documento non trovato</div>;
 
@@ -51,19 +45,7 @@ function CompileTemplate() {
           title="Scarica Documento"
         />
 
-        <FaEnvelope
-          size={28}
-          style={{ cursor: "pointer", color: "#4b0082" }}
-          onClick={handleEmail}
-          title="Invia Email"
-        />
-
-        <FaTelegramPlane
-          size={28}
-          style={{ cursor: "pointer", color: "#4b0082" }}
-          onClick={handleTelegram}
-          title="Invia Telegram"
-        />
+      
 
       </div>
     </div>

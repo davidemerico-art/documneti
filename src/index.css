@@ -35,8 +35,8 @@ h2 {
 
 /* CARD DOCUMENTO */
 .card {
-  background-color: #4284f7; /* blu notte */
-  color: #000000; /* testo nero */
+  background-color: #4284f7; 
+  color: #000000; 
   padding: 20px;
   border-radius: 10px;
   margin-top: 20px;
@@ -56,14 +56,14 @@ h2 {
   margin-top: 8px;
   margin-bottom: 12px;
   padding: 4px 10px;
-  background-color: #ffffff;
+  background-color: #0575ec;
   border-radius: 20px;
   font-size: 12px;
 }
 
 /* PULSANTI */
 .btn {
-  background-color: #4b0082; /* viola scuro */
+  background-color: #4b0082; 
   color: #ffffff;
   padding: 8px 15px;
   border: none;
@@ -96,10 +96,11 @@ h2 {
 
 /* SCROLL ANTEPRIMA */
 .preview-box {
-  height: 200px;
-  overflow-y: auto;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  padding: 10px;
+  height: 400px;              
+  overflow-y: auto;           
+  border: 1px solid #040404;
+  border-radius: 8px;
+  padding: 20px;
   margin-bottom: 20px;
+  background-color: #ffffff;
 }

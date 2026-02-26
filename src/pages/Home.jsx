@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { FaTrash, FaDownload, FaPen, FaEnvelope } from "react-icons/fa";
+import { FaTrash, FaDownload, FaPen, FaEnvelope,FaPlus } from "react-icons/fa";
 import { useDocuments } from "../hooks/useDocuments";
 
 function Home() {
@@ -23,9 +23,12 @@ function Home() {
         <h1 style={{ fontSize: "42px", margin: 0 }}>Documenti</h1>
 
         
-        <button className="btn" onClick={() => navigate("/upload")}>
-          Crea Documento
-        </button>
+        <FaPlus
+          size={30}
+          style={{ cursor: "pointer", color: "#4b0082" }}
+          title="Crea documento"
+          onClick={() => navigate("/upload")}
+        />
 
        
         <FaEnvelope
